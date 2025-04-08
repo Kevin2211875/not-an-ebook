@@ -28,10 +28,10 @@ public class Libro {
     private String portada;
 
     @Column(nullable = false)
-    private int precio;
+    private double precio;
 
     @Column(nullable = false)
-    private int impuesto;
+    private double impuesto;
 
     @Column(nullable = false)
     private int stock;
@@ -59,7 +59,7 @@ public class Libro {
 
     public Libro() {super();}
 
-    public Libro(Integer id, GeneroLiterario generoLiterario, String nombre, String sinopsis, String id_portada, String portada, int precio, int impuesto, int stock, String autor, String editorial, String edicion, Date fecha_publicacion, String idioma, int numero_paginas, String dimensiones, String coleccion) {
+    public Libro(Integer id, GeneroLiterario generoLiterario, String nombre, String sinopsis, String id_portada, String portada, double precio, double impuesto, int stock, String autor, String editorial, String edicion, Date fecha_publicacion, String idioma, int numero_paginas, String dimensiones, String coleccion) {
         this.id = id;
         this.generoLiterario = generoLiterario;
         this.nombre = nombre;
@@ -127,19 +127,19 @@ public class Libro {
         this.portada = portada;
     }
 
-    public int getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(int precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 
-    public int getImpuesto() {
+    public double getImpuesto() {
         return impuesto;
     }
 
-    public void setImpuesto(int impuesto) {
+    public void setImpuesto(double impuesto) {
         this.impuesto = impuesto;
     }
 
