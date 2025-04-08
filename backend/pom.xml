@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.4</version>
+		<version>3.1.9</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.CRUD</groupId>
@@ -98,12 +98,6 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.3.0</version> <!-- ✅ Compatible con Spring Boot 3.1.x -->
         </dependency>
-		
-        <dependency>
-            <groupId>com.CRUD</groupId>
-            <artifactId>Biblioteca</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
 	<build>
@@ -114,5 +108,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
