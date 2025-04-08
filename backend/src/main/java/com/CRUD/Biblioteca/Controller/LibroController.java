@@ -33,7 +33,7 @@ public class LibroController {
     }
 
     @PostMapping("/crearLibro")
-    public ResponseEntity<Libro> crearLibro(@RequestBody Libro libro) {
+    public ResponseEntity<Libro> crearLibro(@RequestBody Libro libro, @RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(libroService.save(libro));
     }
 
@@ -62,7 +62,7 @@ public class LibroController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Libro> deleteLibro(@PathVariable Integer id) {
+    public ResponseEntity<Libro> deleteLibro(@PathVariable Integer id, @RequestHeader("Authorization") String token) {
         if(!libroService.existsById(id)) {
             throw new ResourceNotFoundException("Libro no encontrado con ID: " + id);
         }

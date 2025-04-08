@@ -1,6 +1,7 @@
 package com.CRUD.Biblioteca.Controller;
 
 import com.CRUD.Biblioteca.DTO.UsuarioDTO;
+import com.CRUD.Biblioteca.Exception.ResourceNotFoundException;
 import com.CRUD.Biblioteca.Model.Usuario;
 import com.CRUD.Biblioteca.Reponse.AuthRequest;
 import com.CRUD.Biblioteca.Reponse.RegisterRequest;
@@ -28,12 +29,27 @@ public class UsuarioController {
         this.repository = repository;
     }
 
-    @GetMapping("/listUser")
-    public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
-        List<UsuarioDTO> usuarios = repository.findAll().stream()
+    @GetMapping("/listUserById")
+    public ResponseEntity<UsuarioDTO> listarUsuariosById(@RequestParam Integer id) {
+        UsuarioDTO usuario = repository.findById(id)
                 .map(UsuarioDTO::new)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(usuarios);
+                .orElseThrow(() -> new ResourceNotFoundException("No se ha encontrado el usuario con id: " + id));
+        return ResponseEntity.ok(usuario);
+    }
+
+    @GetMapping("/listUser")
+    public ResponseEntity<List<UsuarioDTO>> listarUsuarios(@RequestHeader("Authorization") String token) {
+        List<Usuario> usuarios = repository.findAll();
+        return ResponseEntity.ok(usuarios.stream().map(UsuarioDTO::new).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/listByEmail")
+    public ResponseEntity<UsuarioDTO> listarUsuariosByEmail(@RequestParam("email") String email,
+                                                            @RequestHeader("Authorization") String token) {
+        UsuarioDTO usuario = repository.findByEmail(email)
+                .map(UsuarioDTO::new)
+                .orElseThrow(() -> new ResourceNotFoundException("No se ha encontrado el usuario con correo: " + email));
+        return ResponseEntity.ok(usuario);
     }
 
 
@@ -59,7 +75,8 @@ public class UsuarioController {
     @PutMapping("/update")
     public ResponseEntity<TokenResponse> updateUser(
             @RequestBody UpdateUserRequest request,
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader,
+            @RequestHeader("Authorization") String token
     ) {
         TokenResponse response = service.update(request, authHeader);
         return ResponseEntity.ok(response);

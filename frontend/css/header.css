@@ -152,7 +152,7 @@ option.headerSelectOptions{
     font-size: 24px; 
 }
 
-.nav-item {
+.nav-item-header {
     width: fit-content; margin-right: 10px;
     text-align: center;
 }
@@ -171,7 +171,7 @@ option.headerSelectOptions{
 }
 
 @media (max-width: 991px)  {
-    .nav-item  {
+    .nav-item-header  {
         margin-left: 14px;
         margin-right: 0px;
     }

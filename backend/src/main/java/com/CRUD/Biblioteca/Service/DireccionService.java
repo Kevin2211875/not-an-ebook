@@ -21,8 +21,12 @@ public class DireccionService implements DireccionRepository {
     private DireccionRepository direccionRepository;
 
     @Override
-    public void flush() {
+    public List<Direccion> findAllByUsuarioId(Integer id_usuario) {
+        return direccionRepository.findAllByUsuarioId(id_usuario);
+    }
 
+    @Override
+    public void flush() {
     }
 
     @Override
@@ -169,4 +173,5 @@ public class DireccionService implements DireccionRepository {
     public <S extends Direccion, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
+
 }
