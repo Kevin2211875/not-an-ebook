@@ -30,7 +30,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/listUserById")
-    public ResponseEntity<UsuarioDTO> listarUsuariosById(@RequestParam Integer id) {
+    public ResponseEntity<UsuarioDTO> listarUsuariosById(@RequestParam Integer id,
+                                                         @RequestHeader("Authorization") String token) {
         UsuarioDTO usuario = repository.findById(id)
                 .map(UsuarioDTO::new)
                 .orElseThrow(() -> new ResourceNotFoundException("No se ha encontrado el usuario con id: " + id));
@@ -75,10 +76,9 @@ public class UsuarioController {
     @PutMapping("/update")
     public ResponseEntity<TokenResponse> updateUser(
             @RequestBody UpdateUserRequest request,
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader,
             @RequestHeader("Authorization") String token
     ) {
-        TokenResponse response = service.update(request, authHeader);
+        TokenResponse response = service.update(request, token);
         return ResponseEntity.ok(response);
     }
 
