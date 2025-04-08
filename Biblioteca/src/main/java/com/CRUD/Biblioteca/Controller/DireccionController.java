@@ -27,16 +27,20 @@ public class DireccionController {
     }
 
     @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<List<Direccion>> obtenerDireccionesPorUsuario(@PathVariable Integer idUsuario) {
+    public ResponseEntity<List<DireccionDTO>> obtenerDireccionesPorUsuario(@PathVariable Integer idUsuario) {
         List<Direccion> direcciones = direccionService.findAllByUsuarioId(idUsuario);
 
         if (direcciones.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Collections.emptyList()); // o podrías devolver un mensaje personalizado
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
 
-        return ResponseEntity.ok(direcciones);
+        List<DireccionDTO> direccionesDTO = direcciones.stream()
+                .map(DireccionDTO::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(direccionesDTO);
     }
+
     @GetMapping("/listarDirecciones")
     public ResponseEntity<?> obtenerDirecciones(@RequestHeader("Authorization") String token) {
         List<Direccion> direcciones = direccionService.findAll();
@@ -49,33 +53,56 @@ public class DireccionController {
 
 
     @PostMapping("/ingresarDireccion")
-    public ResponseEntity<Direccion> ingresarDireccion(@RequestBody Direccion direccion, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<DireccionDTO> ingresarDireccion(@RequestBody Direccion direccion, @RequestHeader("Authorization") String token) {
         Integer idUsuario = direccion.getUsuario().getId();
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + idUsuario));
 
         direccion.setUsuario(usuario); // Asegura que esté bien persistido
-        return ResponseEntity.ok(direccionService.save(direccion));
+        Direccion direccionGuardada = direccionService.save(direccion);
+
+        return ResponseEntity.ok(new DireccionDTO(direccionGuardada));
     }
+
 
     @PutMapping("/{id}")
-    public ResponseEntity<Direccion> updateDireccion(@PathVariable Integer id, @RequestBody Direccion direccion
-    , @RequestHeader("Authorization") String token) {
-        return direccionService.findById(id).
-                map(p -> {
+    public ResponseEntity<DireccionDTO> updateDireccion(
+            @PathVariable Integer id,
+            @RequestBody Direccion direccion,
+            @RequestHeader("Authorization") String token) {
+
+        return direccionService.findById(id)
+                .map(existing -> {
                     direccion.setId(id);
-                    return ResponseEntity.ok(direccionService.save(direccion));
-                }).orElseThrow(() -> new ResourceNotFoundException("Direccion no encontrada con id: " + id));
+
+                    // Aseguramos que el usuario esté bien persistido
+                    Integer idUsuario = direccion.getUsuario().getId();
+                    Usuario usuario = usuarioRepository.findById(idUsuario)
+                            .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + idUsuario));
+                    direccion.setUsuario(usuario);
+
+                    Direccion direccionActualizada = direccionService.save(direccion);
+                    return ResponseEntity.ok(new DireccionDTO(direccionActualizada));
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("Dirección no encontrada con id: " + id));
     }
 
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Direccion> deleteDireccion(@PathVariable Integer id
-    , @RequestHeader("Authorization") String token) {
-        if(!direccionService.existsById(id)) {
-            throw new ResourceNotFoundException("Direccion no encontrado con ID: " + id);
+    public ResponseEntity<DireccionDTO> deleteDireccion(
+            @PathVariable Integer id,
+            @RequestHeader("Authorization") String token) {
+
+        if (!direccionService.existsById(id)) {
+            throw new ResourceNotFoundException("Dirección no encontrada con ID: " + id);
         }
-        Direccion direccion = direccionService.findById(id).orElse(null);
+
+        Direccion direccion = direccionService.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Dirección no encontrada con ID: " + id));
+
         direccionService.deleteById(id);
-        return ResponseEntity.ok(direccion);
+
+        return ResponseEntity.ok(new DireccionDTO(direccion));
     }
+
 }
