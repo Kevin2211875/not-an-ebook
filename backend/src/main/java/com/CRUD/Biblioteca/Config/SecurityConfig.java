@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.http.HttpMethod;
 
 import java.util.List;
 
@@ -46,8 +47,16 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilitar CORS
                 .csrf(AbstractHttpConfigurer::disable) // Deshabilitar CSRF para APIs stateless
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()            // Permitir login/registro
-                        .anyRequest().authenticated()                       // Cualquier otra requiere token
+                        .requestMatchers(
+                            "/auth/**",
+                            "/swagger-ui/**",
+                            "/swagger-ui.html",
+                            "/v3/api-docs/**",
+                            "/v3/api-docs.yaml",
+                            "/webjars/**"
+                            ).permitAll()     
+                        .requestMatchers(HttpMethod.GET, "/libro/**").permitAll()      
+                        .anyRequest().authenticated()                     
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(STATELESS) // Stateless: sin sesión
