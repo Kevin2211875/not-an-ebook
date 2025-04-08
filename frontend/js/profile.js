@@ -27,18 +27,19 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function fetchUsuario() {
-    const endpoint = API_URL + `/auth/listUserbyEmail/${correoUsuario}`
+    const endpoint = API_URL + `/auth/listByEmail?email=${correoUsuario}`
     const fetchUsuario = await fetch(endpoint, {
         method: "GET",
         headers: {
-        "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": `Bearer ${token}`
         },
         credentials: "include"
-    })
+    });
 
     if (!fetchUsuario.ok) {
-        const errorData = await fetchUsuario.json();
-        console.log(errorData);
+        const errorText = await fetchUsuario.text();
+        console.warn("Error al obtener usuario:", fetchUsuario.status, errorText);
         return;
     }
 
@@ -279,24 +280,25 @@ async function fetchDireccion() {
     if (idUsuario == 0) {
         return;
     }
-    const fetchDireccion = await fetch(API_URL + `/usuario/${idUsuario}`, {
+    const fetchDireccion = await fetch(API_URL + `/direccion/usuario/${idUsuario}`, {
         method: "GET",
         headers: {
-        "Content-type": "application/json; charset=UTF-8"
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization": `Bearer ${token}`
         },
         credentials: "include"
     })
 
     if (!fetchDireccion.ok) {
-        const errorData = await fetchDireccion.json();
+        const errorData = await fetchDireccion.text();
         console.log(errorData);
         return;
     }
 
     const direccion = await fetchDireccion.json();
-    idDireccion = direccion.id; //Actualizamos el id de la dirección
-    cargarDireccionUsuario(direccion);
-    cargarDireccionModalUsuario(direccion)
+    idDireccion = direccion[0].id; //Actualizamos el id de la dirección
+    cargarDireccionUsuario(direccion[0]);
+    cargarDireccionModalUsuario(direccion[0])
 }
 
 function cargarDireccionUsuario(direccion) {
@@ -347,7 +349,8 @@ async function actualizarDireccion() {
         const nuevaDireccion = await fetch(API_URL + `/direccion/ingresarDireccion`, {
             method: "POST",
             headers: {
-            "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({
                 "direccion": direccion.trim(),
@@ -363,7 +366,7 @@ async function actualizarDireccion() {
         })
     
         if (!nuevaDireccion.ok) {
-            const errorData = await nuevaDireccion.json();
+            const errorData = await nuevaDireccion.text();
             console.log(errorData);
             return;
         }
@@ -371,7 +374,8 @@ async function actualizarDireccion() {
         const direccionActualizada = await fetch(API_URL + `/direccion/${idDireccion}`, {
             method: "PUT",
             headers: {
-            "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({
                 "id": idDireccion,
@@ -388,7 +392,7 @@ async function actualizarDireccion() {
         })
     
         if (!direccionActualizada.ok) {
-            const errorData = await direccionActualizada.json();
+            const errorData = await direccionActualizada.text();
             console.log(errorData);
             return;
         }
@@ -405,4 +409,30 @@ async function actualizarDireccion() {
 
 document.getElementById("btn-update-direccion").addEventListener("click", async () => {
     await actualizarDireccion();
+})
+
+async function eliminarDireccion() {
+    if (idDireccion != 0) {
+        const borrarDireccion = await fetch(API_URL + `/direccion/${idDireccion}`, {
+            method: "DELETE",
+            headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": `Bearer ${token}`
+            },
+            credentials: "include"
+        })
+    
+        if (!borrarDireccion.ok) {
+            const errorData = await borrarDireccion.json();
+            console.log(errorData);
+            return;
+        }
+        idDireccion = 0;
+    }
+    alert("¡Dirección Eliminada exitosamente!")
+    location.reload()
+}
+
+document.getElementById("btn-delete-direccion").addEventListener("click", async () => {
+    await eliminarDireccion();
 })

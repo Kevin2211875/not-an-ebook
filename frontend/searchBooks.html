@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not An Ebook</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/book-card.css">
+    <link rel="icon" href="assets/Icon WBG.png">
+</head>
+<body>
+    <div class="page-wrapper">
+        <div id="header"></div>
+
+        <div class="content">
+            <div id="enlacesGenerosLiterarios">
+                <h5>Generos Literarios</h5>
+                <div id="carouselGenerosLiterarios" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <!--Se cargan desde JS-->
+                        <div class="carousel-item active" id="main-carrusel-item"></div>
+                        <div class="carousel-item" id="second-carrusel-item"></div>
+                    </div>
+                    
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselGenerosLiterarios" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselGenerosLiterarios" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>  
+            </div>
+
+            <div id="latest-books" style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 20px;">Ultimos Libros Publicados</h5>
+                <div class="row" id="latest-books-1"> </div>
+                <div class="row" id="latest-books-2"> </div>
+            </div>
+        </div>
+
+        <div id="footer"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="js/fetchComponents.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

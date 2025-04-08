@@ -69,6 +69,14 @@ html, body {
     font-weight: 500;
 }
 
+.d-flex > .delete-button {
+    border: 1px solid red;
+    background-color: red;
+    color: white;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
 .d-flex > .profile-button:hover {
     background-color: #1B6392;
     border: 1px solid #1B6392;

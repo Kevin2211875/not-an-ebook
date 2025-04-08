@@ -79,6 +79,39 @@ window.addEventListener('DOMContentLoaded', () => {
             temp.innerHTML = data;
             const template = temp.querySelector('#footer-template');
             const clone = document.importNode(template.content, true);
+
+            clone.querySelector("#a-profile").addEventListener("click", () => {
+                if (token == null) {
+                    window.location.href = "/login.html";
+                } else {
+                    window.location.href = "/profile.html";
+                }
+            });
+
+            clone.querySelector("#a-cart").addEventListener("click", () => {
+                if (token == null) {
+                    window.location.href = "/login.html";
+                } else {
+                    window.location.href = "/shoppingCart.html";
+                }
+            });
+
+            clone.querySelector("#a-history").addEventListener("click", () => {
+                if (token == null) {
+                    window.location.href = "/login.html";
+                } else {
+                    window.location.href = "/orderHistory.html";
+                }
+            });
+
+            clone.querySelector("#a-search").addEventListener("click", () => {
+                if (token == null) {
+                    window.location.href = "/login.html";
+                } else {
+                    window.location.href = "/searchBooks.html";
+                }
+            });
+
             document.getElementById('footer').appendChild(clone);
         }
     );
