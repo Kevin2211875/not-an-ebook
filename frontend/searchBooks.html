@@ -8,46 +8,63 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/book-card.css">
+    <link rel="stylesheet" href="css/searchBooks.css">
     <link rel="icon" href="assets/Icon WBG.png">
 </head>
 <body>
     <div class="page-wrapper">
         <div id="header"></div>
 
-        <div class="content">
-            <div id="enlacesGenerosLiterarios">
-                <h5>Generos Literarios</h5>
-                <div id="carouselGenerosLiterarios" class="carousel carousel-dark slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <!--Se cargan desde JS-->
-                        <div class="carousel-item active" id="main-carrusel-item"></div>
-                        <div class="carousel-item" id="second-carrusel-item"></div>
-                    </div>
-                    
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselGenerosLiterarios" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselGenerosLiterarios" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>  
-            </div>
+        <div class="content container-fluid">
+            <div class="row justify-content-center">
+              <div class="col-md-3" style="margin: 30px 5px">
+                <p id="editoriales-title">EDITORIALES</p>
+                <div id="div-checkboxes" style="display: flex; flex-direction: column; gap: 8px;">
+                  <label><input type="checkbox" class="popular-tag"> Alfaguara</label>
+                  <label><input type="checkbox" class="popular-tag"> Salamandra</label>
+                  <label><input type="checkbox" class="popular-tag"> Booket</label>
+                  <label><input type="checkbox" class="popular-tag"> Alianza</label>
+                  <label><input type="checkbox" class="popular-tag"> Planeta</label>
+                  <label><input type="checkbox" class="popular-tag"> Debolsillo</label>
+                  <label><input type="checkbox" class="popular-tag"> Minotauro</label>
+                  <label><input type="checkbox" class="popular-tag"> Molino</label>
+                </div>                
+              </div>
+          
+              <div class="col-md-7 justify-content-end" id="page-content">
+                <div id="container" style="margin-left: 15px; margin-right: 15px;">
+                    <div class="row d-flex mt-3 mb-1">
+                        <div class="col-md-6 mb-1 d-flex align-items-center">
+                            <p class="mb-0 me-2" style="font-size: 14px; font-weight: 500;">Publicación:</p>
+                            <select class="form-select" id="select-orden">
+                                <option value="1">Reciente</option>
+                                <option value="2">Antigua</option>
+                            </select>
 
-            <div id="latest-books" style="margin-bottom: 20px;">
-                <h5 style="margin-bottom: 20px;">Ultimos Libros Publicados</h5>
-                <div class="row" id="latest-books-1"> </div>
-                <div class="row" id="latest-books-2"> </div>
+                            <p class="mb-0 ml-3" style="font-size: 14px; font-weight: 500; margin-left: 10px;">Géneros:</p>
+                            <select class="form-select" id="select-genero-inventario">
+                                <option value="">Todos</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="div-busqueda-libros" class="row d-flex mt-3">
+
+                    </div>
+                    <nav aria-label="Paginación de libros buscados">
+                        <ul id="paginador" class="pagination justify-content-center">
+                          <!-- Aquí se agregan los botones desde JS -->
+                        </ul>
+                    </nav>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
 
         <div id="footer"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
     <script src="js/fetchComponents.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/searchBooks.js"></script>
 </body>
 </html>

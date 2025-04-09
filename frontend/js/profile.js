@@ -204,8 +204,12 @@ async function actualizarUsuario(){
     }
     
     const respuesta = await fetchUpdate.json();
-    token = respuesta.access_token;
-    localStorage.setItem("token", token); //actualizamos el token por si acaso
+    if (correoUsuario != newEmail) {
+        alert("¡Como actualizaste tu correo, deberás iniciar sesión nuevamente!");
+        //cerramos Sesión
+        localStorage.removeItem("token");
+        window.location.href='/index.html';
+    }
     
     await fetchUsuario(); //Recargamos los Datos ya actualizados
 

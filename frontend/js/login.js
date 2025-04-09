@@ -87,12 +87,10 @@ async function iniciarSesion() {
     })
 
     if (!fetchIniciarSesion.ok) {
-        const errorData = await fetchIniciarSesion.json();
-        if (errorData.message = "Access Denied") {
-            errorGeneral.innerText = "Email o Contraseña Incorrectos"
-            errorGeneral.style.display = "flex";
-        }
+        const errorData = await fetchIniciarSesion.text();
         //console.log(errorData);
+        errorGeneral.innerText = "Email o Contraseña Incorrectos"
+        errorGeneral.style.display = "flex";
         document.getElementById("login-loading").style.display = "none"
         return;
     }
@@ -257,12 +255,9 @@ async function registrarse() {
     })
 
     if (!fetchRegistrarse.ok) {
-        const errorData = await fetchRegistrarse.json();
-        if (errorData.message.includes("could not execute statement [ERROR: duplicate key")) {
-            errorGeneral.style.display = "flex";
-            errorGeneral.innerText = "¡Ya existe un usuario con ese correo!";
-        }
-        //console.log(errorData);
+        const errorData = await fetchRegistrarse.text();
+        errorGeneral.style.display = "flex";
+        errorGeneral.innerText = "¡Puede que ya exista un usuario con ese correo!";
         document.getElementById("registro-loading").style.display = "none"
         return;
     }

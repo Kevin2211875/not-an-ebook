@@ -28,7 +28,7 @@ function cargarGeneros(generosLiterarios) {
         genero.innerHTML =`
          <button class="card" value="${generosLiterarios[i].nombre}">
             <img src="${generosLiterarios[i].portada}" class="card-img-top" alt="genero literario" width="135" height="190">
-            <div class="card-body">
+            <div class="card-body" style="margin-top:2px;">
                 <p class="card-text">${generosLiterarios[i].nombre}</p>
             </div>
         </button>
@@ -86,7 +86,7 @@ function cargarLibrosRecientes(listaLibros) {
             const template = temp.querySelector('#book-template');
             for (let i = 0; i < 12; i++) {
                 impuesto = listaLibros[i].impuesto
-                precio = listaLibros[i].precio * (1 + impuesto);
+                precio = Math.round(listaLibros[i].precio * (1 + impuesto));
                 let cantidad = 0;
 
                 if (listaLibros[i].stock > 0) {
@@ -124,6 +124,11 @@ function cargarLibrosRecientes(listaLibros) {
                     };        
                 });
 
+                //EventListener direccionamiento carrito
+                clone.getElementById("book-card-red-cart").addEventListener("click", () => {
+                    window.location.href = "/shoppingCart.html"
+                });
+
                 //Actualizamos los IDs para tener un modal por tarjeta
 
                 const modalId = `detailsModal-${listaLibros[i].id}`;
@@ -148,7 +153,9 @@ function cargarLibrosRecientes(listaLibros) {
                 modal.querySelector('[libro-genero]').textContent = listaLibros[i].generoLiterario.nombre;
                 modal.querySelector('[libro-editorial]').textContent = listaLibros[i].editorial;
                 modal.querySelector('[libro-edicion]').textContent = listaLibros[i].edicion;
-                modal.querySelector('[libro-sinopsis]').innerHTML = listaLibros[i].sinopsis;
+                
+                const sinopsisConSaltos = listaLibros[i].sinopsis.replace(/\\n\\n/g, '<br>');
+                modal.querySelector('[libro-sinopsis]').innerHTML = sinopsisConSaltos;
                            
                 //Añadimos los event Listeners para manejar la cantidad:
                 const btnMasModal = clone.querySelector("#plus-quantity-modal");
@@ -169,6 +176,11 @@ function cargarLibrosRecientes(listaLibros) {
                         cantidadEl.textContent = `Cantidad: ${cantidad}`;
                         cantidadmodal.textContent = `x${cantidad}`;
                     };        
+                });
+
+                //EventListener direccionamiento carrito
+                clone.getElementById("book-modal-red-cart").addEventListener("click", () => {
+                    window.location.href = "/shoppingCart.html"
                 });
 
                 //Para decidir a que fila se agrega:

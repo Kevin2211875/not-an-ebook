@@ -102,7 +102,7 @@ option.headerSelectOptions{
     margin: 3px;
 }
 
-#buscador {
+.buscador {
     width: 50vw;
     margin-left: 12px;
     margin-right: 12px;
@@ -113,12 +113,12 @@ option.headerSelectOptions{
     padding-bottom: 0px;
 }
 
-#buscador .form-control {
+.buscador .form-control {
     color: black;
     font-size: 17px; 
 }
 
-#buscador .form-control:focus {
+.buscador .form-control:focus {
     border-color: white; 
     box-shadow: none; /* Esto elimina el sombreado azul */
     border-right-color: gray;

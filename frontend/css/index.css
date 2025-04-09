@@ -40,7 +40,7 @@ html, body {
     border-radius: 5px;
     padding: 0px;
     width: 150px;
-    height: 230px;
+    height: 225px !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,4 +74,10 @@ html, body {
     justify-content: space-evenly; 
     margin: 8px; 
     gap: 12px;
+}
+
+@media (max-width:992px) {
+    .card-generos > .card {
+        height: 260px !important;
+    }
 }

@@ -29,6 +29,7 @@ html, body {
 
     #page-content {
         width: 98vw;
+        margin-left: 35px;
     }
 
     .profile-row {

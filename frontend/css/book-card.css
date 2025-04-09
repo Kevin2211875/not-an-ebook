@@ -183,6 +183,10 @@
     border: 1px solid #1B6392;
 }
 
+[libro-sinopsis] {
+    white-space: pre-line;
+}
+
 @media (max-width: 992px) {
     #modalContainer {
         display: flex;

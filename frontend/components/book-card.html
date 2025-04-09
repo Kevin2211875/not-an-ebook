@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="row-buttons">
-                    <button class="book-card-redirects"><i class="bi bi-cart fs-4"></i></button>
+                    <button id="book-card-red-cart" class="book-card-redirects"><i class="bi bi-cart fs-4"></i></button>
                     <button class="book-card-redirects"><i class="bi bi-credit-card-fill fs-4"></i></button>
                 </div>
             </div>
@@ -30,6 +30,9 @@
     <div class="modal fade" id="__ID_MODAL__" tabindex="-1" aria-labelledby="detailBookLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
+          <div class="modal-header d-flex justify-content-end">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">X</button>
+          </div>
           <div class="modal-body">
             <div class="row">
               <!-- Columna Izquierda con imagen -->
@@ -95,7 +98,7 @@
                   </div>
     
                   <div class="col">
-                    <button class="book-card-redirects"><i class="bi bi-cart fs-4"></i></button>
+                    <button id="book-modal-red-cart" class="book-card-redirects"><i class="bi bi-cart fs-4"></i></button>
                   </div>
     
                   <div class="col">

@@ -8,7 +8,7 @@ async function fetchGeneros() {
     })
 
     if (!fetchGeneros.ok) {
-        const errorData = await fetchGeneros.json();
+        const errorData = await fetchGeneros.text();
         console.log(errorData);
         return;
     }
@@ -37,7 +37,7 @@ function addselectGeneros(generosLiterarios) {
     })
 
     if (!fetchInventario.ok) {
-        const errorData = await fetchInventario.json();
+        const errorData = await fetchInventario.text();
         console.log(errorData);
         return;
     }
@@ -68,7 +68,7 @@ async function fetchInventarioFiltrado() {
     })
 
     if (!fetchInventarioFiltrado.ok) {
-        const errorData = await fetchInventarioFiltrado.json();
+        const errorData = await fetchInventarioFiltrado.text();
         console.log(errorData);
         return;
     }
@@ -104,7 +104,7 @@ function renderPagina() {
     }
 
     datosPagina.forEach(libro => {
-        const precio = libro.precio * (1 + libro.impuesto);
+        const precio = Math.round(libro.precio * (1 + libro.impuesto));
         const fila = document.createElement("tr");
         fila.innerHTML = `
             <td>${libro.id}</td>
@@ -128,7 +128,7 @@ function renderPaginador() {
     // Botón "Previous"
     const liPrev = document.createElement("li");
     liPrev.className = `page-item ${paginaActual === 1 ? "disabled" : ""}`;
-    liPrev.innerHTML = `<a class="page-link" href="#" tabindex="-1">Previous</a>`;
+    liPrev.innerHTML = `<a class="page-link" href="#" tabindex="-1">«</a>`;
     liPrev.addEventListener("click", (e) => {
         e.preventDefault();
         if (paginaActual > 1) {
@@ -165,6 +165,46 @@ function renderPaginador() {
     paginador.appendChild(liNext);
 }
 
+var rol = null;
+async function verificarRol() {
+    //Volvemos a cargar el token
+    token = localStorage.getItem("token");
+    const tokenData = parseJwt(token);
+    if (token == null || tokenData == null) {
+        //Se fuerza el logout
+        localStorage.removeItem("token"); //Se elimina porque no es valido
+        window.location.href='/index.html' 
+        return;
+    }
+
+    correoUsuario = tokenData.sub;
+    //console.log(correoUsuario);
+
+    const endpoint = API_URL + `/auth/listByEmail?email=${correoUsuario}`
+    const fetchUsuario = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": `Bearer ${token}`
+        },
+        credentials: "include"
+    });
+
+    if (!fetchUsuario.ok) {
+        const errorText = await fetchUsuario.text();
+        console.warn("Error al obtener usuario:", fetchUsuario.status, errorText);
+        window.location.href='/index.html' 
+        return;
+    }
+
+    const usuario = await fetchUsuario.json();
+    rol = usuario.tipoUsuario.id;
+    if (rol == 2) {
+        window.location.href='/index.html' 
+        return;
+    }
+}
+
 //Se hacen los respectivos fetch al cargarse el DOM
 window.addEventListener('DOMContentLoaded', async () => {
     //Intervalo para la añadir los estilos del enlace activo:
@@ -176,20 +216,22 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
     }, 100);
 
+    await verificarRol();
+
     //Cargar y mostrar los generos literarios
     await fetchGeneros();
     await fetchInventarioFiltrado();
 });
 
 //Event Listeners para menajar el filtrado
-document.getElementById("select-genero-inventario").addEventListener("change", () => {
-    fetchInventarioFiltrado();
+document.getElementById("select-genero-inventario").addEventListener("change", async () => {
+    await fetchInventarioFiltrado();
 });
 
-document.getElementById("buscador-inventario").addEventListener("input", () => {
-    fetchInventarioFiltrado();
+document.getElementById("buscador-inventario").addEventListener("input", async () => {
+    await fetchInventarioFiltrado();
 });
 
-document.getElementById("btn-filter-inventory").addEventListener("click", () => {
-    fetchInventarioFiltrado();
+document.getElementById("btn-filter-inventory").addEventListener("click", async () => {
+    await fetchInventarioFiltrado();
 });
