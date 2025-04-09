@@ -32,6 +32,18 @@
   - Git y GitHub
   - Jira para la gestión de tareas
 
+## Backlog de JIRA (SCRUM)
+
+<p align="center">
+  <img width="562" alt="jira" src="https://github.com/user-attachments/assets/9554e28d-d371-4b17-82f0-8992bc2f0602" />
+</p>
+
+## Modelo Entidad Relación
+
+<p align="center">
+  <img width="528" alt="diagrama" src="https://github.com/user-attachments/assets/a5250419-3aa5-40e9-98f5-410822c00c89" />
+</p>
+
 ## Instalación y Despliegue
 
 1. **Clonar el Repositorio**:
@@ -79,9 +91,3 @@
      ![image](https://github.com/user-attachments/assets/98b95f10-5c9e-4351-923e-80a4a904023e)
 
 #### ⚠ **Importante**: Cada vez que se levante el proyecto con `docker compose up -d` se deberán repetir los pasos **5, 6 y 7**.
-
-
-<img width="418" alt="diagrama" src="https://github.com/user-attachments/assets/a5250419-3aa5-40e9-98f5-410822c00c89" />
-
-<img width="362" alt="jira" src="https://github.com/user-attachments/assets/9554e28d-d371-4b17-82f0-8992bc2f0602" />
-
