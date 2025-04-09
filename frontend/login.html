@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not An Ebook</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="icon" href="assets/Icon WBG.png">
+</head>
+<body>
+    <div class="page-wrapper">
+        <div id="header"></div>
+
+        <div class="content">
+            <div class="card" style="margin: 25px 0px;">
+                <div class="nav nav-tabs d-flex" style="justify-content: center; height: fit-content;" id="nav-tab"
+                    role="tablist">
+                    <a class="w-100 nav-item nav-link" id="tabLeft" style="flex: 1;">
+                        Iniciar Sesión
+                    </a>
+                    <a class="w-100 nav-item nav-link" id="tabRight" style="flex: 1;">
+                        Registrarse
+                    </a>
+                </div>
+
+                <div id="login-form" style="padding: 10px;">
+                    <form>
+                        <div class="mb-3">
+                            <p class="form-label">Correo Electronico</p>
+                            <input type="text" class="form-control" id="login-correo" placeholder="Digite su email aquí"
+                                name="logEmail" autocomplete="def@def.com">
+                            <p id="email-error-login" style="display: none; color: red; font-weight: 500;">
+                                * El correo Electronico no es valido *
+                            </p>
+                        </div>
+        
+                        <div class="mb-3" style="margin-bottom: 0px;">
+        
+                            <p class="form-label" style="display: block;">Contraseña</p>
+        
+                            <div class="password-toggle" style="display: flex; align-items: center;">
+                                <input type="password" class="form-control" name="password" id="login-password"
+                                    placeholder="8+ Caracteres">
+                                <i class="bi bi-eye" style="cursor: pointer;" id="show-password-icon"></i>
+                            </div>
+        
+                            <p id="password-error-login" style="display: none; color: red; font-weight: 500;">
+                                * La contraseña debe tener mas de 8 caracteres * 
+                            </p>
+        
+                            <div id="login-loading" style="display: none; justify-content: center; align-items: center; margin: 15px 0 15px 0; padding: 0;">
+                                <p class="loading-text" style="margin: 0;">
+                                    <i id="spinning-loading-arrow" class="bi bi-arrow-repeat spin"></i> Cargando...
+                                </p>
+                            </div>
+                        </div>
+        
+                        <button id="iniciar-sesion" type="button" class="login-btn  btn-primary mb-3" style="width: 100%; margin-bottom: 0px;">
+                            Iniciar Sesión
+                        </button>
+        
+                        <p id="login-error-feedback" style="display: none; color: red; font-weight: 500; justify-content: center;"></p>
+        
+                        <div class="mb-3" style="display: flex; align-items: center; text-align: center; margin: 0px;">
+                            <hr style="flex: 1; border: none; border-top: 1px solid #000; margin: 0;">
+                            <span style="padding: 0 10px; color: #000;">o</span>
+                            <hr style="flex: 1; border: none; border-top: 1px solid #000; margin: 0;">
+                        </div>
+        
+                        <div class="d-flex justify-content-center mb-3">
+                            <button type="button" class="login-btn otherButton d-flex align-items-center" style="width: 80%;">
+                                <i class="bi bi-google" style="padding-left: 32px;"></i>
+                                <span class="text-center flex-grow-1">Inicia Sesion con Google</span>
+                            </button>
+                        </div>
+        
+                        <div class="d-flex justify-content-center mb-3">
+                            <button type="button" class="login-btn otherButton d-flex align-items-center" style="width: 80%;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="30" fill="#FA8232"
+                                    class="bi bi-apple" viewBox="0 0 16 16">
+                                    <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282" />
+                                </svg>
+                                <span class="text-center flex-grow-1">Inicia Sesion con Apple</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+        
+                <div id="register-form" style="padding: 10px; display: none;">
+                    <form>
+                        <div class="mb-3">
+                            <p class="form-label">Nombres</p>
+                            <input type="text" class="form-control" id="registro-nombre" name="regName"
+                                autocomplete="Default Name" placeholder="Pepito">
+                        </div>
+        
+                        <div class="mb-3">
+                            <p class="form-label">Apellidos</p>
+                            <input type="text" class="form-control" id="registro-apellido" name="regLastName"
+                                placeholder="Perez">
+                        </div>
+        
+                        <div class="mb-3">
+                            <p class="form-label">Teléfono</p>
+                            <input type="number" class="form-control" id="registro-telefono" placeholder="312 3456789"
+                            name="regPhoneNumber">
+                            <p id="registro-error-telefono" style="display: none; color: red; font-weight: 500;">
+                                * El teléfono celular solo debe tener 10 digitos * 
+                            </p>
+                        </div>
+
+        
+                        <div class="mb-3">
+                            <p class="form-label">Correo Electrónico</p>
+                            <input type="email" class="form-control" id="registro-email" placeholder="Digite su email aquí"
+                                name="regEmail" autocomplete="def@def.com">
+                            <p id="registro-error-email" style="display: none; color: red; font-weight: 500;">
+                                * El correo electrónico es invalido *
+                            </p>
+                        </div>
+        
+                        <div class="mb-3">
+                            <p class="form-label" style="display: block;">Contraseña</p>
+                            <div class="password-toggle" style="display: flex; align-items: center;">
+                                <input type="password" class="form-control" name="password" id="registro-password"
+                                    placeholder="8+ Caracteres">
+                                <i class="bi bi-eye" style="cursor: pointer;" id="reg-show-password-icon"></i>
+                            </div>
+        
+                            <p id="registro-error-password" style=" display: none; color: red; font-weight: 500;">
+                                * La contraseña debe tener mas de 8 caracteres * 
+                            </p>
+                        </div>
+        
+                        <div class="mb-3">
+                            <p class="form-label" style="display: block;">Confirmar Contraseña</p>
+                            
+                            <div class="password-toggle" style="display: flex; align-items: center;">
+                                <input type="password" class="form-control" name="password" id="registro-repeat-password"
+                                    placeholder="8+ Caracteres">
+                                <i class="bi bi-eye" style="cursor: pointer;" id="reg-rep-show-password-icon"></i>
+                            </div>
+        
+                            <p id="registro-repeat-password-length" style=" display: none; color: red; font-weight: 500;">
+                                * La contraseña debe tener mas de 8 caracteres * 
+                            </p>
+        
+                            <p id="registro-equal-password" style=" display: none; color: red; font-weight: 500; margin-bottom: 10px;">
+                                * Las contraseñas deben ser iguales*</p>
+                        </div>
+        
+                        <div class="d-flex" style="justify-content: center; display: block;">
+                            <input id="registro-terminos" class="form-check-input" type="checkbox" name="regCheck" />
+                            <p class="form-check-label" style="display: inline; width: fit-content; padding-left: 5px;">
+                                ¿Aceptas los <a>Terminos, Condiciones</a> y las <a>Politicas de privacidad</a> de <b>Not An Ebook</b>?
+                            </p>
+                        </div>
+        
+                        <p id="registro-terminos-error" style=" display: flex; color: red; font-weight: 500; margin-left: 15px;">
+                            * Por favor acepta los terminos y condiciones para continuar *
+                        </p>
+
+                        <div id="registro-loading" style="display: none; justify-content: center; align-items: center; margin: 15px 0 15px 0; padding: 0;">
+                                <p class="loading-text" style="margin: 0;">
+                                    <i id="spinning-loading-arrow" class="bi bi-arrow-repeat spin"></i> Cargando...
+                                </p>
+                        </div>
+        
+                        <button id="btn-registrarse" class="login-btn btn-primary" type="button" style="width: 100%; margin-bottom: 10px;">
+                           Registrarse
+                        </button>
+        
+                        <div style="display: flex; justify-content: center; align-items: center; margin-top: 5px;">
+                            <p id="registro-error-general" style=" display: none; color: red; font-weight: 500; margin-left: 15px;"></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="js/fetchComponents.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

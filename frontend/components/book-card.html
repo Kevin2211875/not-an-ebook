@@ -1,0 +1,114 @@
+<template id="book-template">
+    <div class="card">
+        <img libro-portada class="book-cover-img" alt="Portada Libro" data-bs-toggle="modal" data-bs-target="#__ID_MODAL__">
+        <div class="card-body">
+            <div class="col-12">
+                <div class="modal-trigger" data-bs-toggle="modal" data-bs-target="#__ID_MODAL__">
+                    <div class="row align-items-center">
+                        <p class="title" libro-titulo></p>
+                    </div>
+    
+                    <div class="row">
+                        <p class="price" libro-precio></p>
+                    </div>
+                </div>
+
+                <div class="quantity">
+                    <button id="minus-quantity-card">—</button>
+                    <p libro-cantidad></p>
+                    <button id="plus-quantity-card">+</button>
+                </div>
+
+                <div class="row-buttons">
+                    <button id="book-card-red-cart" class="book-card-redirects"><i class="bi bi-cart fs-4"></i></button>
+                    <button class="book-card-redirects"><i class="bi bi-credit-card-fill fs-4"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="__ID_MODAL__" tabindex="-1" aria-labelledby="detailBookLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header d-flex justify-content-end">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">X</button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <!-- Columna Izquierda con imagen -->
+              <div class="col-md-4" id="left-detail-column">
+                <div id="img-container">
+                  <img libro-portada alt="portada Libro">
+                </div>
+              </div>
+    
+              <!-- Columna Derecha con detalles -->
+              <div class="col-md-7">
+                <h4 libro-titulo style="font-weight: 500; text-align: center;"></h4>
+                <div class="row">
+                  <div class="col">
+                    <p>Fecha:</p>
+                    <p libro-fecha style="font-weight: 500"></p>
+                  </div>
+                  <div class="col">
+                    <p>Estado:</p>
+                    <p libro-disponibilidad style="font-weight: 500"></p>
+                  </div>
+                </div>
+    
+                <div class="row">
+                  <div class="col">
+                    <p>Autor:</p>
+                    <p libro-autor style="font-weight: 500"></p>
+                  </div>
+                  <div class="col">
+                    <p>Género:</p>
+                    <p libro-genero style="font-weight: 500; text-align: center;"></p>
+                  </div>
+                </div>
+    
+                <div class="row">
+                  <div class="col">
+                    <p style="margin: 0px;">Editorial:</p>
+                    <p libro-editorial style="font-weight: 500; text-align: center;"></p>
+                  </div>
+                  <div class="col">
+                    <p>Edición:</p>
+                    <p libro-edicion style="font-weight: 500"></p>
+                  </div>
+                </div>
+    
+                <div style="display: flex; justify-content: center; margin-top: 10px;">
+                  <h5 style="display: inline; font-weight: 500; margin-right: 5px;">Precio:</h5>
+                  <h5 libro-precio style="color: #2DA5F3; font-weight: 500; display: inline;"></h5>
+                </div>
+    
+                <div class="row" style="margin-left: 15px; margin-top: 0px;">
+                  <h5 style="font-weight: 500; margin-bottom: 2px;">Sinopsis:</h5>
+                  <p libro-sinopsis style="text-align: justify; font-size: 15px;"></p>
+                </div>
+    
+                <div class="row">
+                  <div class="col">
+                    <div class="quantity">
+                      <button id="minus-quantity-modal">—</button>
+                      <p libro-cantidad-modal style="font-size: 15px; text-align: center;">x</p>
+                      <button id="plus-quantity-modal">+</button>
+                    </div>
+                  </div>
+    
+                  <div class="col">
+                    <button id="book-modal-red-cart" class="book-card-redirects"><i class="bi bi-cart fs-4"></i></button>
+                  </div>
+    
+                  <div class="col">
+                    <button class="book-card-redirects"><i class="bi bi-credit-card-fill fs-4"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</template>

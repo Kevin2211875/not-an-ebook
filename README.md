@@ -57,7 +57,3 @@ Configurar las credenciales de acceso en el archivo application.properties ubica
 Backend: La API estará disponible en http://localhost:8080.
 
 Frontend: Abrir el archivo index.html ubicado en el directorio frontend en un navegador web.
-
-
-
-

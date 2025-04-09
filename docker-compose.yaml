@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Roa36
+      POSTGRES_DB: not_an_ebook
+    ports:
+      - "5435:5432"
+
+  backend:
+    image: back-entornos-v1:latest
+    depends_on:
+      - db
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/not_an_ebook
+      DB_USER: postgres
+      DB_PASS: Roa36
+    ports:
+      - "8081:8081"
+
+  frontend:
+    image: front-entornos-v1:latest
+    ports:
+      - "8080:8080"
