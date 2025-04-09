@@ -32,28 +32,50 @@
   - Git y GitHub
   - Jira para la gestión de tareas
 
-## Instalación y Configuración
+## Instalación y Despliegue
 
 1. **Clonar el Repositorio**:
-
    ```bash
    git clone https://github.com/Kevin2211875/Software-de-Librer-a.git
-2. **Configurar base de datos**:
-Crear una base de datos en Postgres llamada libreria_db.
+   ```
+2. **Verificar que Docker y Docker Compose estan instalados:**:
+    ```bash
+    docker --version
+    docker compose version #Versiones nuevas
+    docker-compose version #Versiones más antiguas
+    ```
+    **Si Docker y Docker Compose no están instalados, puedes seguir este tutorial:**  
+    - 🔗 [Guía de instalación en DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-es)  **O simplemente consultar a tu IA de confianza. 😉**
 
-Configurar las credenciales de acceso en el archivo application.properties ubicado en src/main/resources/:
+3. **Crear las imagenes del Front y del Front**
+    ```bash
+    #Desde la raiz del repo
+    cd Biblioteca/
+    docker build -t back-entornos-v1 .
+  
+    cd ../frontend/
+    docker build -t front-entornos-v1 .
+  
+    #Volver a la raiz del proyecto:
+    cd ..
+    ```
+4. **Ejecutar el Docker Compose**
+    ```bash
+    docker compose up -d
+    ```
+    > ℹ️ **Nota**: **Para detener la ejecución utilice** `docker compose down`
+  
+5. **Conectarse a su gestor de DB de confianza (Puerto 5435)**
+
+     ![image](https://github.com/user-attachments/assets/268a7634-ad6a-492a-9642-a31ea54b06ab)
     
-  spring.datasource.url=jdbc:postgres://localhost:3306/libreria_db
-  spring.datasource.username=tu_usuario
-  spring.datasource.password=tu_contraseña
-
-3. **ejecutar aplicacion**
+    > ⚠ **Importante:** Recuerde actualizar el host segun su caso especifico.
    
-   cd Software-de-Librer-a
-   mvn spring-boot:run
+7. **Ejecutar el Script PoblarDB.sql**
+  **El back debería haber creado las tablas al ejecutarse**
+   
+8. **Registrar y actualizar el Rol de un usuario para que sea Admin (Opcional)**
 
-5. **acceder a la aplicacion**
+     ![image](https://github.com/user-attachments/assets/98b95f10-5c9e-4351-923e-80a4a904023e)
 
-Backend: La API estará disponible en http://localhost:8080.
-
-Frontend: Abrir el archivo index.html ubicado en el directorio frontend en un navegador web.
+#### ℹ️ **Nota**: Cada vez que se levante el proyecto con `docker compose up -d` se deberán repetir los pasos **5, 6 y 7**.
