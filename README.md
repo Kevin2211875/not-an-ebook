@@ -39,7 +39,7 @@
    ```bash
    git clone https://github.com/Kevin2211875/Software-de-Librer-a.git
 2. **Configurar base de datos**:
-Crear una base de datos en MySQL llamada libreria_db.
+Crear una base de datos en Postgres llamada libreria_db.
 
 Configurar las credenciales de acceso en el archivo application.properties ubicado en src/main/resources/:
     
