@@ -78,4 +78,4 @@
 
      ![image](https://github.com/user-attachments/assets/98b95f10-5c9e-4351-923e-80a4a904023e)
 
-#### ℹ️ **Nota**: Cada vez que se levante el proyecto con `docker compose up -d` se deberán repetir los pasos **5, 6 y 7**.
+#### ⚠ **Importante**: Cada vez que se levante el proyecto con `docker compose up -d` se deberán repetir los pasos **5, 6 y 7**.
