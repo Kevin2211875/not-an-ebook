@@ -1,6 +1,5 @@
 package com.CRUD.Biblioteca.Model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class Usuario {
     @JoinColumn(name = "id_tipo_usuario")
     private TipoUsuario tipoUsuario;
 
-    @Column(nullable = false, length = 250, name = "correo")
+    @Column(nullable = false, length = 250, name = "correo", unique = true)
     private String email;
 
     @Column(nullable = false, length = 200)

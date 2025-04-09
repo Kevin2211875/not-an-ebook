@@ -1,5 +1,6 @@
 package com.CRUD.Biblioteca.Service;
 
+import com.CRUD.Biblioteca.Exception.ResourceNotFoundException;
 import com.CRUD.Biblioteca.Model.TipoUsuario;
 import com.CRUD.Biblioteca.Model.Token;
 import com.CRUD.Biblioteca.Model.Usuario;
@@ -38,6 +39,11 @@ public class AuthService {
 
     public TokenResponse register(final RegisterRequest request) {
 
+        // Verificar si ya existe un usuario con ese correo
+        if (repository.findByEmail(request.correo()).isPresent()) {
+            throw new ResourceNotFoundException("El correo ya está registrado.");
+        }
+
         final Usuario user = new Usuario();
         user.setNombres(request.name());
         user.setApellidos(request.apellidos());
@@ -45,7 +51,7 @@ public class AuthService {
         user.setEmail(request.correo());
         user.setTipoUsuario(new TipoUsuario(2));
         user.setContrasena(passwordEncoder.encode(request.contrasena()));
-        user.setTokens(new ArrayList<>()); // Inicializar la lista de tokens si es necesario
+        user.setTokens(new ArrayList<>());
 
         final Usuario savedUser = repository.save(user);
         final String jwtToken = jwtService.generateToken(savedUser);
@@ -54,6 +60,7 @@ public class AuthService {
         saveUserToken(savedUser, jwtToken);
         return new TokenResponse(jwtToken, refreshToken);
     }
+
 
     public TokenResponse update(
             final UpdateUserRequest request,
@@ -105,7 +112,6 @@ public class AuthService {
         return new TokenResponse(currentAccessToken, currentRefreshToken);
     }
 
-
     public TokenResponse authenticate(final AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -115,6 +121,10 @@ public class AuthService {
         );
         final Usuario user = repository.findByEmail(request.email())
                 .orElseThrow();
+
+        if(!user.isCuenta_activa()){
+            throw new ResourceNotFoundException("El usuario no tiene cuenta activa");
+        }
         final String accessToken = jwtService.generateToken(user);
         final String refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);

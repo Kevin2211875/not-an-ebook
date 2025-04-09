@@ -77,6 +77,36 @@ async function fetchInventarioFiltrado() {
     cargarTablaInventario(inventario);
 }
 
+function redireccionar(id) {
+    window.location.href = `manageBook.html?id=${id}`;
+}
+
+async function eliminarLibro(id) {
+    const confirmar = confirm("¿Estás seguro de que deseas eliminar este libro?");
+    
+    if (confirmar) {
+        const deleteBook = await fetch(API_URL + `/libro/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": `Bearer ${token}`
+            },
+            credentials: "include"
+        });
+
+        if (!deleteBook.ok) {
+            const errorData = await deleteBook.text();
+            alert("Ocurrió un error al eliminar el libro.");
+            console.log(errorData);
+            return;
+        }
+
+        alert("Libro Eliminado Exitosamente");
+        await fetchInventarioFiltrado();
+    }
+}
+
+
 //Logica Paginador:
 const FILAS_POR_PAGINA = 10;
 let paginaActual = 1;
@@ -112,7 +142,14 @@ function renderPagina() {
             <td>${libro.generoLiterario.nombre}</td>
             <td>COP $${precio.toLocaleString('es-CO')}</td>
             <td>${libro.stock}</td>
-            <td><button class="btn btn-sm btn-primary">Editar</button></td>
+            <td>
+                <button onclick="redireccionar(${libro.id})" class="btn btn-sm btn-primary">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+                <button onclick="eliminarLibro(${libro.id})" class="btn btn-sm btn-danger">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
         `;
         tbody.appendChild(fila);
     });

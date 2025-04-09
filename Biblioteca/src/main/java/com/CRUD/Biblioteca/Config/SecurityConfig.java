@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.http.HttpMethod;
 
 import java.util.List;
 
@@ -44,22 +43,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilitar CORS
-                .csrf(AbstractHttpConfigurer::disable) // Deshabilitar CSRF para APIs stateless
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                            "/auth/**",
-                            "/swagger-ui/**",
-                            "/swagger-ui.html",
-                            "/v3/api-docs/**",
-                            "/v3/api-docs.yaml",
-                            "/webjars/**"
-                            ).permitAll()     
-                        .requestMatchers(HttpMethod.GET, "/libro/**").permitAll()      
-                        .anyRequest().authenticated()                     
+                        .anyRequest().permitAll() // Permitir todas las peticiones
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(STATELESS) // Stateless: sin sesión
+                        .sessionCreationPolicy(STATELESS)
                 )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -72,6 +62,8 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
 
 
     @Bean
