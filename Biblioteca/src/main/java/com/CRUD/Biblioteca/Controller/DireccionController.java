@@ -51,7 +51,6 @@ public class DireccionController {
         return ResponseEntity.ok(direccionesDTO);
     }
 
-
     @PostMapping("/ingresarDireccion")
     public ResponseEntity<DireccionDTO> ingresarDireccion(@RequestBody Direccion direccion, @RequestHeader("Authorization") String token) {
         Integer idUsuario = direccion.getUsuario().getId();
@@ -63,7 +62,6 @@ public class DireccionController {
 
         return ResponseEntity.ok(new DireccionDTO(direccionGuardada));
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<DireccionDTO> updateDireccion(
@@ -86,7 +84,6 @@ public class DireccionController {
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Dirección no encontrada con id: " + id));
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<DireccionDTO> deleteDireccion(
