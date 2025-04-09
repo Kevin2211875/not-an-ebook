@@ -19,7 +19,7 @@
   - Spring Security
   - JWT (JSON Web Tokens)
   - JPA/Hibernate
-  - Base de datos MySQL
+  - Base de datos Postgres
 
 - **Frontend**:
   - HTML5
