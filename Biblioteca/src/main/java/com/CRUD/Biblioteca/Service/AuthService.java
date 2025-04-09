@@ -1,5 +1,6 @@
 package com.CRUD.Biblioteca.Service;
 
+import com.CRUD.Biblioteca.Exception.ResourceNotFoundException;
 import com.CRUD.Biblioteca.Model.TipoUsuario;
 import com.CRUD.Biblioteca.Model.Token;
 import com.CRUD.Biblioteca.Model.Usuario;
@@ -115,6 +116,10 @@ public class AuthService {
         );
         final Usuario user = repository.findByEmail(request.email())
                 .orElseThrow();
+
+        if(!user.isCuenta_activa()){
+            throw new ResourceNotFoundException("El usuario no tiene cuenta activa");
+        }
         final String accessToken = jwtService.generateToken(user);
         final String refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
