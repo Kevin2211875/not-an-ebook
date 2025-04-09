@@ -43,7 +43,7 @@ Crear una base de datos en MySQL llamada libreria_db.
 
 Configurar las credenciales de acceso en el archivo application.properties ubicado en src/main/resources/:
     
-  spring.datasource.url=jdbc:mysql://localhost:3306/libreria_db
+  spring.datasource.url=jdbc:postgres://localhost:3306/libreria_db
   spring.datasource.username=tu_usuario
   spring.datasource.password=tu_contraseña
 
