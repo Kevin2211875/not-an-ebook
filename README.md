@@ -82,3 +82,6 @@
 
 
 <img width="418" alt="diagrama" src="https://github.com/user-attachments/assets/a5250419-3aa5-40e9-98f5-410822c00c89" />
+
+<img width="362" alt="jira" src="https://github.com/user-attachments/assets/9554e28d-d371-4b17-82f0-8992bc2f0602" />
+
