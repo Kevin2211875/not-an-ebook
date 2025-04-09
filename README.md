@@ -47,7 +47,7 @@
     **Si Docker y Docker Compose no están instalados, puedes seguir este tutorial:**  
     - 🔗 [Guía de instalación en DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-es)  **O simplemente consultar a tu IA de confianza. 😉**
 
-3. **Crear las imagenes del Front y del Front**
+3. **Crear las imagenes del Front y del Back:**
     ```bash
     #Desde la raiz del repo
     cd Biblioteca/
@@ -59,13 +59,13 @@
     #Volver a la raiz del proyecto:
     cd ..
     ```
-4. **Ejecutar el Docker Compose**
+4. **Ejecutar el Docker Compose:**
     ```bash
     docker compose up -d
     ```
     > ℹ️ **Nota**: **Para detener la ejecución utilice** `docker compose down`
   
-5. **Conectarse a su gestor de DB de confianza (Puerto 5435)**
+5. **Conectarse a su gestor de DB de confianza (Puerto 5435):**
 
      ![image](https://github.com/user-attachments/assets/268a7634-ad6a-492a-9642-a31ea54b06ab)
     
@@ -74,7 +74,7 @@
 7. **Ejecutar el Script PoblarDB.sql**
   **El back debería haber creado las tablas al ejecutarse**
    
-8. **Registrar y actualizar el Rol de un usuario para que sea Admin (Opcional)**
+8. **Registrar y actualizar el Rol de un usuario para que sea Admin (Opcional):**
 
      ![image](https://github.com/user-attachments/assets/98b95f10-5c9e-4351-923e-80a4a904023e)
 
