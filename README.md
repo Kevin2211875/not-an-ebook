@@ -42,20 +42,22 @@
 Crear una base de datos en MySQL llamada libreria_db.
 
 Configurar las credenciales de acceso en el archivo application.properties ubicado en src/main/resources/:
+    
+  spring.datasource.url=jdbc:mysql://localhost:3306/libreria_db
+  spring.datasource.username=tu_usuario
+  spring.datasource.password=tu_contraseña
 
-  ```bash
-spring.datasource.url=jdbc:mysql://localhost:3306/libreria_db
-spring.datasource.username=tu_usuario
-spring.datasource.password=tu_contraseña
- 
 3. **ejecutar aplicacion**
-   ```bash
-cd Software-de-Librer-a
-mvn spring-boot:run
+   
+   cd Software-de-Librer-a
+   mvn spring-boot:run
 
-4. **acceder a la aplicacion**
+5. **acceder a la aplicacion**
 
 Backend: La API estará disponible en http://localhost:8080.
 
 Frontend: Abrir el archivo index.html ubicado en el directorio frontend en un navegador web.
+
+
+
 
