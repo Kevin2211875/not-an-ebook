@@ -8,7 +8,6 @@ import com.CRUD.Biblioteca.Model.Libro;
 import com.CRUD.Biblioteca.Repository.CarritoRepository;
 import com.CRUD.Biblioteca.Repository.DetalleCarritoRepository;
 import com.CRUD.Biblioteca.Repository.LibroRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;

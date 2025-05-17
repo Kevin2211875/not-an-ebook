@@ -1,6 +1,7 @@
 package com.CRUD.Biblioteca.Service;
 
 import com.CRUD.Biblioteca.DTO.DetalleCarritoDTO;
+import com.CRUD.Biblioteca.Exception.ResourceNotFoundException;
 import com.CRUD.Biblioteca.Model.Carrito;
 import com.CRUD.Biblioteca.Repository.CarritoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -180,7 +181,11 @@ public class CarritoService implements CarritoRepository {
     public Carrito vaciarCarrito(String correoUsuario) {
         Carrito carrito = obtenerCarritoPorCorreo(correoUsuario);
         carrito.getDetalleCarrito().clear();
-        return carritoRepository.save(carrito);
+        carrito.setTotal(0);
+        carritoRepository.save(carrito);
+
+        return carritoRepository.findById(carrito.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("No se pudo recargar el carrito después de vaciarlo"));
     }
 
     public List<DetalleCarritoDTO> convertirDTO(Carrito carrito){

@@ -26,6 +26,11 @@ public class DireccionService implements DireccionRepository {
     }
 
     @Override
+    public Direccion findByUsuarioId(Integer id_usuario) {
+        return direccionRepository.findByUsuarioId(id_usuario);
+    }
+
+    @Override
     public void flush() {
     }
 

@@ -23,7 +23,7 @@ public class Venta {
     private String observaciones;
 
     @Column(nullable = false)
-    private Integer total;
+    private Double total;
 
     @Column(nullable = false)
     private String direccion;
@@ -33,7 +33,7 @@ public class Venta {
 
     public Venta() {super();}
 
-    public Venta(Integer id, Usuario usuario, Date fecha, String observaciones, Integer total, String direccion, List<DetalleVenta> detalleVenta) {
+    public Venta(Integer id, Usuario usuario, Date fecha, String observaciones, Double total, String direccion, List<DetalleVenta> detalleVenta) {
         this.id = id;
         this.usuario = usuario;
         this.fecha = fecha;
@@ -75,11 +75,11 @@ public class Venta {
         this.observaciones = observaciones;
     }
 
-    public Integer getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 

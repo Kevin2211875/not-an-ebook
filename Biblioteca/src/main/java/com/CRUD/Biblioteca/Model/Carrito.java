@@ -1,6 +1,8 @@
 package com.CRUD.Biblioteca.Model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,8 +19,8 @@ public class Carrito {
     @Column(nullable = false)
     private double total;
 
-    @OneToMany(mappedBy = "carrito")
-    private List<DetalleCarrito> detalleCarrito;
+    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<DetalleCarrito> detalleCarrito = new ArrayList<>();
 
     public Carrito() {super();}
 

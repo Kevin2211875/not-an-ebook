@@ -1,23 +1,22 @@
 package com.CRUD.Biblioteca.Service;
 
 import com.CRUD.Biblioteca.Model.DetalleVenta;
-import com.CRUD.Biblioteca.Repository.DetalleVentaRespository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.CRUD.Biblioteca.Repository.DetalleVentaRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
 @Service
-public class DetalleVentaService implements DetalleVentaRespository {
+public class DetalleVentaService implements DetalleVentaRepository {
 
-    @Autowired
-    private DetalleVentaRespository detalleVentaRespository;
+    private DetalleVentaRepository detalleVentaRespository;
 
     @Override
     public void flush() {
@@ -155,9 +154,7 @@ public class DetalleVentaService implements DetalleVentaRespository {
     }
 
     @Override
-    public void deleteAll() {
-
-    }
+    public void deleteAll() {}
 
     @Override
     public List<DetalleVenta> findAll(Sort sort) {
@@ -167,5 +164,25 @@ public class DetalleVentaService implements DetalleVentaRespository {
     @Override
     public Page<DetalleVenta> findAll(Pageable pageable) {
         return null;
+    }
+
+    @Override
+    public List<DetalleVenta> findByVentaId(Integer ventaId) {
+        return detalleVentaRespository.findByVentaId(ventaId);
+    }
+
+    @Override
+    public List<DetalleVenta> findByProductoId(Integer idLibro) {
+        return detalleVentaRespository.findByProductoId(idLibro);
+    }
+
+    @Override
+    public List<DetalleVenta> findByUsuarioId(Integer usuarioId) {
+        return detalleVentaRespository.findByUsuarioId(usuarioId);
+    }
+
+    @Override
+    public List<DetalleVenta> findByFechaBetween(Date fechaInicio, Date fechaFin) {
+        return detalleVentaRespository.findByFechaBetween(fechaInicio, fechaFin);
     }
 }

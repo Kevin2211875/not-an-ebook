@@ -22,12 +22,16 @@ public class JwtService {
     private long refreshExpiration;
 
     public String extractUsername(String token) {
-        return Jwts.parser()
-                .verifyWith(getSignInKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
+        try{
+            return Jwts.parser()
+                    .verifyWith(getSignInKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .getSubject();
+        }catch (Exception e){
+            return String.valueOf(new RuntimeException("Token expirado"));
+        }
     }
 
     public String generateToken(final Usuario user) {

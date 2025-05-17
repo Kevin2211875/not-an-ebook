@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
 
-
 public interface LibroRepository extends JpaRepository<Libro, Integer> {
     @Query(value = """
     SELECT l.*

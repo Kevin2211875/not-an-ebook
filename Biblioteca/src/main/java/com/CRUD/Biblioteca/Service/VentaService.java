@@ -1,7 +1,11 @@
 package com.CRUD.Biblioteca.Service;
 
-import com.CRUD.Biblioteca.Model.Venta;
+import com.CRUD.Biblioteca.Exception.ResourceNotFoundException;
+import com.CRUD.Biblioteca.Model.*;
+import com.CRUD.Biblioteca.Repository.DetalleVentaRepository;
+import com.CRUD.Biblioteca.Repository.LibroRepository;
 import com.CRUD.Biblioteca.Repository.VentaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -9,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -18,6 +24,22 @@ public class VentaService implements VentaRepository {
 
     @Autowired
     private VentaRepository ventaRepository;
+
+    private final UserDetailsServiceImpl usuarioService;
+    private final CarritoService carritoService;
+    private final DetalleVentaRepository detalleVentaRepository;
+    private final LibroRepository libroRepository;
+    private final DireccionService direccionService;
+
+    public VentaService(LibroRepository libroRepository, DireccionService direccionService, DetalleVentaRepository detalleVentaRepository, CarritoService carritoService, UserDetailsServiceImpl usuarioService, VentaRepository ventaRepository) {
+
+        this.libroRepository = libroRepository;
+        this.direccionService = direccionService;
+        this.detalleVentaRepository = detalleVentaRepository;
+        this.carritoService = carritoService;
+        this.usuarioService = usuarioService;
+        this.ventaRepository = ventaRepository;
+    }
 
     @Override
     public void flush() {
@@ -161,11 +183,207 @@ public class VentaService implements VentaRepository {
 
     @Override
     public List<Venta> findAll(Sort sort) {
-        return List.of();
+        return ventaRepository.findAll(sort);
     }
 
     @Override
     public Page<Venta> findAll(Pageable pageable) {
         return null;
     }
+
+    @Override
+    public List<Venta> listarTodosFiltroDesc(Integer idLibro) {
+        return ventaRepository.listarTodosFiltroDesc(idLibro);
+    }
+
+    public List<Venta> listarTodos() {
+        return ventaRepository.listarTodosFiltroDesc(null);
+    }
+
+    public List<Venta> listarTodosUsuario(String correoUsuario) {
+
+        Usuario usuario = usuarioService.findByCorreo(correoUsuario);
+
+        return ventaRepository.findByUsuarioId(usuario.getId());
+    }
+
+    public List<Venta> listarTodosFiltroAsc(Integer idLibro) {
+        return ventaRepository.listarTodosFiltroAsc(idLibro);
+    }
+
+    public List<Venta> listarTodosFiltro(Integer idLibro, boolean descFecha) {
+        if (descFecha) {
+            return ventaRepository.listarTodosFiltroDesc(idLibro);
+        } else {
+            return ventaRepository.listarTodosFiltroAsc(idLibro);
+        }
+    }
+
+    @Override
+    public List<Venta> findByUsuarioId(Integer idUsuario) {
+        return ventaRepository.findByUsuarioId(idUsuario);
+    }
+
+    @Override
+    public List<Venta> findUsuarioAndNombreLibroDesc(Integer idUsuario, String nombreLibro) {
+        return ventaRepository.findUsuarioAndNombreLibroDesc(idUsuario, nombreLibro);
+    }
+
+    @Override
+    public List<Venta> findUsuarioAndNombreLibroAsc(Integer idUsuario, String nombreLibro) {
+        return ventaRepository.findUsuarioAndNombreLibroAsc(idUsuario, nombreLibro);
+    }
+
+    public List<Venta> listarFiltroUsuario(String correoUsuario, String nombreLibro, boolean descFecha) {
+        Usuario usuario = usuarioService.findByCorreo(correoUsuario);
+
+        nombreLibro = nombreLibro.trim().toUpperCase().replaceAll("\\s+", " ");
+
+        if (descFecha) {
+            return ventaRepository.findUsuarioAndNombreLibroAsc(usuario.getId(), nombreLibro);
+        } else {
+            return ventaRepository.findUsuarioAndNombreLibroDesc(usuario.getId(), nombreLibro);
+        }
+    }
+
+    @Override
+    public List<Venta> reporteIndividualDesc(String cliente, Date fechaInferior, Date fechaSuperior) {
+        return ventaRepository.reporteIndividualDesc(cliente, fechaInferior, fechaSuperior);
+    }
+
+    @Override
+    public List<Venta> reporteIndividualAsc(String cliente, Date fechaInferior, Date fechaSuperior) {
+        return ventaRepository.reporteIndividualAsc(cliente, fechaInferior, fechaSuperior);
+    }
+
+    public List<Venta> reporteIndividual(String cliente, Date fechaInferior, Date fechaSuperior, boolean descFecha) {
+
+        fechaSuperior = new Date(fechaSuperior.getTime() + 24 * 60 * 60 * 1000 - 1);
+
+        cliente = cliente.trim().toUpperCase().replaceAll("\\s+", " ");
+
+        if (descFecha) {
+            return ventaRepository.reporteIndividualDesc(cliente, fechaInferior, fechaSuperior);
+        } else {
+            return ventaRepository.reporteIndividualAsc(cliente, fechaInferior, fechaSuperior);
+        }
+    }
+
+    public List<Venta> reporte2B() {
+        return new ArrayList<>();
+    }
+
+    public List<Venta> reporteConjunto(String cliente, Date fechaInferior, Date fechaSuperior, boolean descFecha, List<String> sucursales) {
+
+        List<String> sucursalesValidas = List.of("2A", "2B");
+
+        if(sucursales.isEmpty()){
+            sucursales = sucursalesValidas;
+        }
+
+        List<Venta> reporte = new ArrayList<>();
+
+        for (String sucursal : sucursales) {
+            if(sucursal == null){
+                throw new ResourceNotFoundException("The branch not found");
+            }
+            sucursal = sucursal.trim().toUpperCase();
+
+            if(sucursal.equals("2A")){
+                reporte.addAll(reporteIndividual(cliente, fechaInferior, fechaSuperior, descFecha));
+            }
+            if(sucursal.equals("2B")){
+                reporte.addAll(reporte2B());
+            }
+
+            if (!sucursalesValidas.contains(sucursal)) {
+                throw new ResourceNotFoundException("The branch not found");
+            }
+
+        }
+
+        return reporte;
+    }
+
+    @Transactional
+    public Venta registrar(String correoUsuario, String observaciones) {
+        //usuario
+        Usuario usuario = usuarioService.findByCorreo(correoUsuario);
+
+        if (observaciones == null) {
+            observaciones = "";
+        } else {
+            observaciones = observaciones.trim().toLowerCase().replaceAll("\\s+", " ");
+        }
+
+
+        //creacion de la venta
+        Venta venta = new Venta();
+        venta.setUsuario(usuario);
+        venta.setFecha(new java.util.Date());
+        venta.setObservaciones(observaciones);
+        venta.setTotal(0.0);
+
+        //direccion
+        Direccion direccion = direccionService.findByUsuarioId(usuario.getId());
+        venta.setDireccion(direccion.getDireccion());
+
+        venta = ventaRepository.save(venta);
+
+        //creacion de detalles venta
+        venta.setDetalleVenta(crearDetallesVenta(venta, usuario));
+        venta = ventaRepository.save(venta);
+
+        //vaciar carrito
+        carritoService.vaciarCarrito(usuario.getEmail());
+
+        return venta;
+    }
+
+
+    private List<DetalleVenta> crearDetallesVenta(Venta venta, Usuario usuario) {
+        Carrito carrito = carritoService.obtenerCarritoPorCorreo(usuario.getEmail());
+        List<DetalleCarrito> detallesCarrito = carrito.getDetalleCarrito();
+
+        if (detallesCarrito.isEmpty()) {
+            throw new ResourceNotFoundException("The cart is empty");
+        }
+
+        Double total = 0.0;
+        List<DetalleVenta> detallesVenta = new ArrayList<>();
+
+        for (DetalleCarrito detalleCarrito : detallesCarrito) {
+            Libro libro = detalleCarrito.getLibro();
+            int cantidad = detalleCarrito.getCantidad();
+
+            // Verificar stock antes de modificar
+            if (libro.getStock() < cantidad) {
+                throw new ResourceNotFoundException("Not enough stock for the product: " + libro.getNombre());
+            }
+
+            // Crear y guardar DetalleVenta
+            DetalleVenta detalleVenta = new DetalleVenta();
+            detalleVenta.setVenta(venta);
+            detalleVenta.setLibro(libro);
+            detalleVenta.setCantidad(cantidad);
+            detalleVentaRepository.save(detalleVenta);
+
+            // Actualizar stock del libro
+            libro.setStock(libro.getStock() - cantidad);
+            libroRepository.save(libro);
+
+            // Calcular total de la venta
+            total += libro.getPrecio() * cantidad * (1 + libro.getImpuesto());
+
+            // Agregar a la lista que se devolverá
+            detallesVenta.add(detalleVenta);
+        }
+
+        // Actualizar total en la venta
+        venta.setTotal(total);
+
+        return detallesVenta;
+    }
+
+
 }
