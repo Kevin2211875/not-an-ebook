@@ -1,7 +1,14 @@
 package com.CRUD.Biblioteca.Service;
 
+import com.CRUD.Biblioteca.DTO.DetalleCarritoAgregarDTO;
+import com.CRUD.Biblioteca.Exception.ResourceNotFoundException;
+import com.CRUD.Biblioteca.Model.Carrito;
 import com.CRUD.Biblioteca.Model.DetalleCarrito;
+import com.CRUD.Biblioteca.Model.Libro;
+import com.CRUD.Biblioteca.Repository.CarritoRepository;
 import com.CRUD.Biblioteca.Repository.DetalleCarritoRepository;
+import com.CRUD.Biblioteca.Repository.LibroRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -18,6 +25,12 @@ public class DetalleCarritoService implements DetalleCarritoRepository {
 
     @Autowired
     private DetalleCarritoRepository detalleCarritoRepository;
+
+    @Autowired
+    private CarritoRepository carritoRepository;
+
+    @Autowired
+    private LibroRepository libroRepository;
 
     @Override
     public void flush() {
@@ -56,7 +69,9 @@ public class DetalleCarritoService implements DetalleCarritoRepository {
 
     @Override
     public DetalleCarrito getById(Integer integer) {
-        return null;
+        return detalleCarritoRepository.findById(integer).
+                orElseThrow(() -> new ResourceNotFoundException("Detail not found"));
+
     }
 
     @Override
@@ -139,6 +154,7 @@ public class DetalleCarritoService implements DetalleCarritoRepository {
         detalleCarritoRepository.deleteById(integer);
     }
 
+
     @Override
     public void delete(DetalleCarrito entity) {
 
@@ -168,4 +184,58 @@ public class DetalleCarritoService implements DetalleCarritoRepository {
     public Page<DetalleCarrito> findAll(Pageable pageable) {
         return null;
     }
+
+    public DetalleCarrito agregarDetalleCarrito(DetalleCarritoAgregarDTO dto) {
+        double total = 0;
+        Carrito carrito = carritoRepository.findById(dto.getIdCarrito())
+                .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
+
+        Libro libro = libroRepository.findById(dto.getIdLibro())
+                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+
+        double subtotal = (libro.getPrecio() + libro.getImpuesto()) * dto.getCantidad();
+
+        // Buscar si ya hay un detalle con ese libro en el carrito
+        Optional<DetalleCarrito> existente = carrito.getDetalleCarrito().stream()
+                .filter(det -> det.getLibro().getId().equals(libro.getId()))
+                .findFirst();
+
+        if (existente.isPresent()) {
+            // Si existe, sumar la cantidad
+            DetalleCarrito detalle = existente.get();
+            detalle.setCantidad(detalle.getCantidad() + dto.getCantidad());
+            carrito.setTotal(carrito.getTotal() + subtotal);
+            carritoRepository.save(carrito);
+            return detalleCarritoRepository.save(detalle);
+        } else {
+            // Si no existe, crear un nuevo detalle
+            DetalleCarrito nuevo = new DetalleCarrito();
+            nuevo.setCarrito(carrito);
+            nuevo.setLibro(libro);
+            nuevo.setCantidad(dto.getCantidad());
+
+            carrito.setTotal(carrito.getTotal() + subtotal);
+            carritoRepository.save(carrito);
+
+            return detalleCarritoRepository.save(nuevo);
+        }
+    }
+
+    // Actualizar la cantidad de un detalle del carrito
+    public DetalleCarrito actualizarDetalleCarrito(Integer idDetalleCarrito, Integer cantidad) {
+        DetalleCarrito detalle = detalleCarritoRepository.findById(idDetalleCarrito)
+                .orElseThrow(() -> new RuntimeException("Detalle del carrito no encontrado"));
+
+        detalle.setCantidad(cantidad);
+        return detalleCarritoRepository.save(detalle);
+    }
+
+    // Eliminar un detalle del carrito por su ID
+    public void eliminarDetalleCarrito(Integer idDetalleCarrito) {
+        DetalleCarrito detalle = detalleCarritoRepository.findById(idDetalleCarrito)
+                .orElseThrow(() -> new RuntimeException("Detalle del carrito no encontrado"));
+
+        detalleCarritoRepository.delete(detalle);
+    }
+
 }

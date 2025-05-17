@@ -47,7 +47,6 @@ public class DireccionController {
         List<DireccionDTO> direccionesDTO = direcciones.stream()
                 .map(DireccionDTO::new)
                 .collect(Collectors.toList());
-
         return ResponseEntity.ok(direccionesDTO);
     }
 

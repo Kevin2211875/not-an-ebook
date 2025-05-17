@@ -1,6 +1,7 @@
 package com.CRUD.Biblioteca.Service;
 
 import com.CRUD.Biblioteca.Exception.ResourceNotFoundException;
+import com.CRUD.Biblioteca.Model.Carrito;
 import com.CRUD.Biblioteca.Model.TipoUsuario;
 import com.CRUD.Biblioteca.Model.Token;
 import com.CRUD.Biblioteca.Model.Usuario;
@@ -10,6 +11,7 @@ import com.CRUD.Biblioteca.Reponse.TokenResponse;
 import com.CRUD.Biblioteca.Reponse.UpdateUserRequest;
 import com.CRUD.Biblioteca.Repository.TokenRepository;
 import com.CRUD.Biblioteca.Repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,15 +30,18 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final CarritoService carritoService;
 
-    public AuthService(UsuarioRepository repository, TokenRepository tokenRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public AuthService(UsuarioRepository repository, TokenRepository tokenRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, CarritoService carritoService) {
         this.repository = repository;
         this.tokenRepository = tokenRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+        this.carritoService = carritoService;
     }
 
+    @Transactional
     public TokenResponse register(final RegisterRequest request) {
 
         // Verificar si ya existe un usuario con ese correo
@@ -56,6 +61,11 @@ public class AuthService {
         final Usuario savedUser = repository.save(user);
         final String jwtToken = jwtService.generateToken(savedUser);
         final String refreshToken = jwtService.generateRefreshToken(savedUser);
+
+        Carrito carrito = new Carrito();
+        carrito.setUsuario(savedUser);
+        carrito.setTotal(0);
+        carritoService.save(carrito);
 
         saveUserToken(savedUser, jwtToken);
         return new TokenResponse(jwtToken, refreshToken);

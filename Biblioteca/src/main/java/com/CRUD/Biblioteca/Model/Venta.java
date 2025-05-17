@@ -3,6 +3,7 @@ package com.CRUD.Biblioteca.Model;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "venta")
@@ -27,15 +28,19 @@ public class Venta {
     @Column(nullable = false)
     private String direccion;
 
+    @OneToMany(mappedBy = "venta")
+    private List<DetalleVenta> detalleVenta;
+
     public Venta() {super();}
 
-    public Venta(Integer id, Integer total, Date fecha, String observaciones, String direccion, Usuario usuario) {
+    public Venta(Integer id, Usuario usuario, Date fecha, String observaciones, Integer total, String direccion, List<DetalleVenta> detalleVenta) {
         this.id = id;
-        this.total = total;
+        this.usuario = usuario;
         this.fecha = fecha;
         this.observaciones = observaciones;
+        this.total = total;
         this.direccion = direccion;
-        this.usuario = usuario;
+        this.detalleVenta = detalleVenta;
     }
 
     public Integer getId() {
@@ -46,12 +51,12 @@ public class Venta {
         this.id = id;
     }
 
-    public Integer getTotal() {
-        return total;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setTotal(Integer total) {
-        this.total = total;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Date getFecha() {
@@ -70,6 +75,14 @@ public class Venta {
         this.observaciones = observaciones;
     }
 
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
     public String getDireccion() {
         return direccion;
     }
@@ -78,11 +91,11 @@ public class Venta {
         this.direccion = direccion;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public List<DetalleVenta> getDetalleVenta() {
+        return detalleVenta;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setDetalleVenta(List<DetalleVenta> detalleVenta) {
+        this.detalleVenta = detalleVenta;
     }
 }

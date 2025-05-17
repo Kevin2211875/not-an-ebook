@@ -11,9 +11,7 @@ import com.CRUD.Biblioteca.Repository.UsuarioRepository;
 import com.CRUD.Biblioteca.Service.AuthService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +50,6 @@ public class UsuarioController {
                 .orElseThrow(() -> new ResourceNotFoundException("No se ha encontrado el usuario con correo: " + email));
         return ResponseEntity.ok(usuario);
     }
-
 
     @PostMapping("/register")
     public ResponseEntity<TokenResponse> register(@RequestBody RegisterRequest request) {
